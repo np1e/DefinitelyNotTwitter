@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS follows;
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
-  descrip TEXT NOT NULL,
+  descrip TEXT,
   password TEXT NOT NULL
 );
 
