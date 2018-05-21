@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - {{ user['name'] }}{% endblock %}
+{% block content %}
+  <form method='post'>
+    <label for='username'>Username</label>
+    <input name='username' id='username'><br>
+    <label for='desc'>Description</label>
+    <input name='desc' id='desc'><br>
+    <label for='newPwd'>New Password</label>
+    <input name='newPwd' id='newPwd' type='password'><br>
+    <label for='confirm'>Old Password</label>
+    <input name='confirm' id='confirm' type='password'><br>
+    <input type='submit' value='Save'>
+  </form>
+{% endblock %}
