@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from . import database as db
 from . import auth
+from . import user
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -17,5 +18,6 @@ def create_app():
 
     db.init_app(app)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(user.bp)
 
     return app
