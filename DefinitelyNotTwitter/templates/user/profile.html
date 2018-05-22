@@ -2,9 +2,9 @@
 
 {% block title %}Profile - {{ user['name'] }}{% endblock %}
 {% block content %}
-  {{ user['name'] }}<br>
+  Username: {{ user['name'] }}<br>
   {% if user['descrip']%}
-    {{ user['descrip'] }}<br>
+    Description: {{ user['descrip'] }}<br>
   {% endif %}
   {% if g.user['id'] == user['id'] %}
     <a class="action" href="{{ url_for('user.edit_user', id = g.user['id']) }}">Edit</a>
