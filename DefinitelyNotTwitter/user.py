@@ -65,3 +65,39 @@ def edit_user(id):
         flash(error)
 
     return render_template('user/edit.html', user = user)
+
+@bp.route('/<int:id>/follow')
+def follow(id):
+
+    user = get_user(id)
+
+    #if no user is logged in, redirect to login
+    if not g.user:
+        return redirect(url_for('auth.login'))
+
+    #else add follower to user
+    db = get_db()
+
+    db.execute(
+        'INSERT INTO follows (fid, uid) VALUES (?, ?)', (g.user['id'], user['id'])
+    )
+    db.commit()
+    
+    return redirect(url_for('user.show_profile', id = user['id']))
+
+@bp.route('/<int:id>/unfollow')
+def unfollow(id):
+    user = get_user(id)
+
+    #if no user is logged in, redirect to login
+    if not g.user:
+        return redirect(url_for('auth.login'))
+
+    #else add follower to user
+    db = get_db()
+
+    db.execute(
+        'DELETE FROM follows WHERE fid = ? AND uid = ?', (g.user['id'], user['id'])
+    )
+
+    return redirect(url_for('user.show_profile', id = user['id']))
