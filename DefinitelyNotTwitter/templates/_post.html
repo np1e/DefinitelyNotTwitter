@@ -1,0 +1,11 @@
+{% macro display_post(userid, content, created) %}
+  <div class="row post">
+      <div class="col-xs-12 row">
+          <div class="col-xs-8 post-userdata">{{ userid }}</div>
+          <div class="col-xs-4 post-date">{{ created }}</div>
+      </div>
+      <div class="col-xs-12 row">
+          <div class="col-xs-4 post-content">{{ content }}</div>
+      </div>
+  </div>
+{% endmacro %}
