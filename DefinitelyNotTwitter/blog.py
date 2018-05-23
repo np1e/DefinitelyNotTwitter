@@ -11,17 +11,23 @@ from . import database as db
 
 bp = Blueprint('blog', __name__)
 
-
 #@bp.route('/', defaults={'page': 1})
 #@bp.route('/page/<int:page>')
 @bp.route('/')
 def index():
     db = get_db()
+    error = None
     posts = db.execute(
     'SELECT * FROM post NATURAL LEFT OUTER JOIN (SELECT uid FROM follows WHERE fid = ?) ORDER BY created DESC', (g.user['id'],)
     ).fetchall()
 
-    return render_template('blog/index.html', posts = posts)
+    if posts is None:
+        error = "No posts available."
+
+    if error is None:
+        return render_template('blog/index.html', posts = posts)
+    flash(error)
+    return render_template('blog/index.html')
 
 @bp.route('/create', methods=('GET', 'POST'))
 def create():
