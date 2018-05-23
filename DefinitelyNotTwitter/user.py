@@ -19,10 +19,27 @@ def get_user(id):
 
     return user
 
+def follows(fid, uid):
+    db = get_db()
+
+    if db.execute(
+        'SELECT * FROM follows WHERE fid = ? AND uid = ?', (fid, uid)
+    ).fetchone() is not None:
+        return True
+    else:
+        return False
+
 @bp.route('/<int:id>')
 def show_profile(id):
+    db = get_db()
     user = get_user(id)
-    return render_template('user/profile.html', user = user)
+    following = follows(g.user['id'], user['id'])
+
+    posts = db.execute(
+        'SELECT * FROM post WHERE uid = ? ORDER BY created DESC', (id,)
+    ).fetchall()
+
+    return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
 
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
@@ -70,6 +87,7 @@ def edit_user(id):
 def follow(id):
 
     user = get_user(id)
+    error = None
 
     #if no user is logged in, redirect to login
     if not g.user:
@@ -77,12 +95,20 @@ def follow(id):
 
     #else add follower to user
     db = get_db()
+    if db.execute(
+        'SELECT * FROM follows where fid = ? AND uid = ?',(g.user['id'], user['id'])
+    ).fetchone() is not None:
+        error = 'You are already following {}'.format(user['name'])
 
-    db.execute(
-        'INSERT INTO follows (fid, uid) VALUES (?, ?)', (g.user['id'], user['id'])
-    )
-    db.commit()
-    
+    if error is None:
+        db.execute(
+            'INSERT INTO follows (fid, uid) VALUES (?, ?)', (g.user['id'], user['id'])
+        )
+        db.commit()
+        return redirect(url_for('user.show_profile', id = user['id']))
+
+    flash(error)
+
     return redirect(url_for('user.show_profile', id = user['id']))
 
 @bp.route('/<int:id>/unfollow')
@@ -99,5 +125,6 @@ def unfollow(id):
     db.execute(
         'DELETE FROM follows WHERE fid = ? AND uid = ?', (g.user['id'], user['id'])
     )
+    db.commit()
 
     return redirect(url_for('user.show_profile', id = user['id']))
