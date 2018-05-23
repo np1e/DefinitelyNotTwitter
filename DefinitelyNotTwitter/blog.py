@@ -15,22 +15,19 @@ bp = Blueprint('blog', __name__)
 #@bp.route('/page/<int:page>')
 @bp.route('/')
 def index():
-    if g.user is None:
-        return redirect(url_for('auth.login'))
-    else:
-        db = get_db()
-        error = None
-        posts = db.execute(
-        'SELECT * FROM post NATURAL LEFT OUTER JOIN (SELECT uid FROM follows WHERE fid = ?) ORDER BY created DESC', (g.user['id'],)
-        ).fetchall()
+    db = get_db()
+    error = None
+    posts = db.execute(
+    'SELECT * FROM post NATURAL LEFT OUTER JOIN (SELECT uid FROM follows WHERE fid = ?) ORDER BY created DESC', (g.user['id'],)
+    ).fetchall()
 
-        if posts is None:
-            error = 'No posts available.'
+    if posts is None:
+        error = "No posts available."
 
-        if error is None:
-            return render_template('blog/index.html', posts = posts)
-
-        return render_template('blog/index.html')
+    if error is None:
+        return render_template('blog/index.html', posts = posts)
+    flash(error)
+    return render_template('blog/index.html')
 
 @bp.route('/create', methods=('GET', 'POST'))
 def create():
