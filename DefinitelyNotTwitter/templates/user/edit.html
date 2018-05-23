@@ -2,15 +2,31 @@
 
 {% block title %}Edit Profile - {{ user['name'] }}{% endblock %}
 {% block content %}
-  <form method='post'>
-    <label for='username'>Username</label>
-    <input name='username' id='username'><br>
-    <label for='desc'>Description</label>
-    <input name='desc' id='desc'><br>
-    <label for='newPwd'>New Password</label>
-    <input name='newPwd' id='newPwd' type='password'><br>
-    <label for='confirm'>Old Password</label>
-    <input name='confirm' id='confirm' type='password'><br>
-    <input type='submit' value='Save'>
-  </form>
+  <div class="col-sm-6 edit">
+    <div class="wrap">
+      <h2>Account bearbeiten:</h2>
+      <hr>
+      <form method='post'>
+        <div class="form-group">
+          <label for='username'>Username</label>
+          <input class="form-control" name='username' id='username'><br>
+        </div>
+        <div class="form-group">
+          <label for='desc'>Description</label>
+          <input class="form-control" name='desc' id='desc'><br>
+        </div>
+        <div class="form-group">
+          <label for='newPwd'>New Password</label>
+          <input class="form-control" name='newPwd' id='newPwd' type='password'><br>
+        </div>
+        <div class="form-group">
+          <label for='confirm'>Old Password</label>
+          <input class="form-control" name='confirm' id='confirm' type='password'><br>
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" type='submit' value='Save'>
+        </div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-
 {% block title %}Profile - {{ user['name'] }}{% endblock %}
 {% block content %}
-  Username: {{ user['name'] }}<br>
+  <div class="col-sm-6 user-profile">  
+    Username: {{ user['name'] }}<br>
   {% if user['descrip']%}
     Description: {{ user['descrip'] }}<br>
   {% endif %}
@@ -12,4 +12,5 @@
   {% if g.user['id'] != user['id'] %}
     <a class="action" href="{{ url_for('user.follow', id = user['id']) }}">Follow</a>
   {% endif %}
+  </div>
 {% endblock %}

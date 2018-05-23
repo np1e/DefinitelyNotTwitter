@@ -3,13 +3,34 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-  <form method='post'>
-    <label for="username">Username</label>
-    <input name="username"><br>
-    <label for='password'>Password</label>
-    <input name='password' type='password'><br>
-    <label for='confirm'>Repeat Password</label>
-    <input name='confirm' type='password'><br>
-    <input type="submit" value="Register">
-  </form>
+  <div class="col-sm-6 login">
+    <div class="wrap">
+      <h2>Jetzt registrieren:</h2>
+      <hr>
+      <form method='post'>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input class="form-control" name="username"><br>
+        </div>
+        <div class="form-group">
+          <label for='password'>Password</label>
+          <input class="form-control" name='password' type='password'><br>
+        </div>
+        <div class="form-group">
+          <label for='confirm'>Repeat Password</label>
+          <input class="form-control" name='confirm' type='password'><br>
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary"  type="submit" value="Register">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-sm-5 guide">
+    <div class="wrap">
+      <h2>Schon angemeldet?</h2>
+      <hr>
+      <p><a href="{{ url_for('auth.login') }}">Klicke hier um dich einzuloggen!</a></p>
+    </div>
+  </div>
 {% endblock %}
