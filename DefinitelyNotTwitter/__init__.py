@@ -1,12 +1,15 @@
 import os
 
 from flask import Flask
+from flask_bootstrap import Bootstrap
 from . import database as db
 from . import auth
 from . import user
+from . import blog
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
+    Bootstrap(app)
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE = os.path.join(app.instance_path, 'DefinitelyNotTwitter.sqlite'),
@@ -18,6 +21,8 @@ def create_app():
 
     db.init_app(app)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(blog.bp)
     app.register_blueprint(user.bp)
+    app.add_url_rule('/', endpoint='index')
 
     return app
