@@ -1,4 +1,5 @@
 import functools
+import os
 from . import auth
 from flask import(
     Blueprint, flash, redirect, render_template, request, session, url_for, g
@@ -6,6 +7,7 @@ from flask import(
 from werkzeug.exceptions import abort
 from werkzeug.security import check_password_hash, generate_password_hash
 from DefinitelyNotTwitter.database import get_db
+from werkzeug.utils import secure_filename
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -41,6 +43,9 @@ def show_profile(id):
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 def edit_user(id):

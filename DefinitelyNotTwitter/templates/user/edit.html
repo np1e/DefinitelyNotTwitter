@@ -6,10 +6,14 @@
     <div class="wrap">
       <h2>Account bearbeiten:</h2>
       <hr>
-      <form method='post'>
+      <form method='post' enctype='multipart/form-data'>
         <div class="form-group">
           <label for='username'>Username</label>
           <input class="form-control" name='username' id='username'><br>
+        </div>
+        <div class="form-group">
+          <label for='file'>Upload profile image</label>
+          <input class="form-control" type="file" name='username' id='file'><br>
         </div>
         <div class="form-group">
           <label for='desc'>Description</label>
