@@ -8,13 +8,12 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from DefinitelyNotTwitter.database import get_db
 from . import user
 from . import database as db
+from DefinitelyNotTwitter.auth import login_required
+bp = Blueprint('blog', __name__, url_prefix='/blog')
 
-bp = Blueprint('blog', __name__)
-
-#@bp.route('/', defaults={'page': 1})
-#@bp.route('/page/<int:page>')
 @bp.route('/')
-def index():
+@login_required
+def feed():
     db = get_db()
     error = None
     posts = db.execute(
@@ -27,9 +26,11 @@ def index():
     if error is None:
         return render_template('blog/index.html', posts = posts)
     flash(error)
+
     return render_template('blog/index.html')
 
 @bp.route('/create', methods=('GET', 'POST'))
+@login_required
 def create():
     db = get_db()
 

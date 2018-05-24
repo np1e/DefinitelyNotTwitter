@@ -1,6 +1,7 @@
 import functools
 import os
-from . import auth
+from . import auth as auth
+
 from flask import(
     Blueprint, flash, redirect, render_template, request, session, url_for, g
 )
@@ -47,12 +48,12 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+from DefinitelyNotTwitter.auth import login_required
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
 def edit_user(id):
     user = get_user(id)
-
-    if id != g.user['id']:
-        return redirect(url_for('auth.login'))
 
     if request.method == 'POST':
         username = request.form['username']
