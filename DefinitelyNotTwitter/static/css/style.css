@@ -7,6 +7,6 @@
 .content .login .wrap, .content .guide .wrap, .content .edit .wrap {border:1px; solid #ccc; padding:40px;}
 .post img {width:50px; border-radius:100px;border:5px solid #fff;}
 .post h1 {display:inline-block;font-size:15px; font-weight:bold;padding:0;margin:0 10px;}
-.post h2 {display:inline-block;font-size:12px;padding:0;margin:0;}
+.post p {display:inline-block;font-size:12px;padding:0;margin:0;}
 .content .user-profile { background:#e6e6e6; padding:20px;color:#000;border:1px solid #ccc;border-radius:5px;}
 .user-profile img {width:100%;padding:10px;border-radius:200px;border:20px solid #e6e6e6;background:#fff;}
