@@ -24,7 +24,7 @@ def search():
 
         if error is None:
             results = db.execute(
-            'SELECT * FROM post WHERE content LIKE "%'+query+'%"'
+            'SELECT * FROM post, user WHERE content LIKE ? AND user.id = post.uid', ('%' + query + '%',)
             ).fetchall()
 
         if results is None:
@@ -35,19 +35,3 @@ def search():
 
         flash(error)
     return render_template('search/results.html')
-
-@bp.route('/advanced', methods=('GET', 'POST'))
-def advanced():
-    db = get_db()
-
-    if request.method == 'POST':
-        userStr = request.form['username']
-        content = request.form['content']
-        userSearch = request.form['userSearch']
-        stringSearch = request.form['stringSearch']
-        error = None
-
-        if userSearch:
-            users = db.execute(
-                'SELECT * FROM user WHERE name LIKE ?', ('%' + userStr + '%')
-            )

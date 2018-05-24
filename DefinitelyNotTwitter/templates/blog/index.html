@@ -15,4 +15,9 @@
       {{ display_post(post) }}
     {% endfor %}
   {% endif %}
+
+
+  {% from '_pagination.html' import display_pagination %}
+  {{ display_pagination(page, pagecount) }}
+
 {% endblock %}

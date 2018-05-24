@@ -4,6 +4,8 @@
   <div class="col-sm-4 user-profile">
       {% if user['avatar'] == 1 %}
         <img src="/static/img/{{ user['id'] }}.jpg">
+      {% else %}
+        <img src="/static/img/default.jpg">
       {% endif %}
       Username: {{ user['name'] }}<br>
       {% if user['descrip']%}
@@ -24,4 +26,5 @@
     {{ display_post(post) }}
     {% endfor %}
   </div>
+
 {% endblock %}

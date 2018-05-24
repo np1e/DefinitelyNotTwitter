@@ -4,6 +4,7 @@ venv/
 __pycache__/
 
 instance/
+static/img/
 
 .pytest_cache/
 .coverage
