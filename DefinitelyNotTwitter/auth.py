@@ -6,7 +6,7 @@ from flask import(
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from DefinitelyNotTwitter.database import get_db
-from . import user
+
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -67,7 +67,12 @@ def login():
 
         if error is None:
             session.clear()
+            if user['admin'] == 1:
+                session['admin'] = True
+            else:
+                session['admin'] = False
             session['user_id'] = user['id']
+            from . import user
             return redirect(url_for('user.show_profile', id = session['user_id']))
 
         flash(error)
