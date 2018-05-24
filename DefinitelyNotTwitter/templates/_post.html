@@ -2,8 +2,11 @@
 
 <div class="post panel panel-default">
   <div class="panel-heading">
-    <img src="/static/img/{{ post['uid'] }}.jpg">
-    <h3 class="panel-title">{{ post['created'].strftime("%d.%m.%Y | %H:%M") }}</h3>
+    {% if post['avatar'] == 1 %}
+      <img src="/static/img/{{ post['uid'] }}.jpg">
+    {% endif %}
+    <h1>{{ post['name'] }}</h1>
+    <h2>{{ post['created'].strftime("%d.%m.%Y | %H:%M") }}</h2>
   </div>
   <div class="panel-body">
     {{ post['content'] }}
