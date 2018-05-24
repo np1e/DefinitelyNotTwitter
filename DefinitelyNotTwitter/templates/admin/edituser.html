@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Profile - {{ user['name'] }}{% endblock %}
+{% block title %}Edit User - {{ user['name'] }}{% endblock %}
 {% block content %}
   {{ super() }}
   <div class="col-sm-6 edit">
@@ -23,18 +23,25 @@
           <label for='desc'>Description</label>
           <textarea class="form-control" name='desc' id='desc' placeholder="{{ user['descrip'] }}"></textarea><br>
         </div>
+        <hr/>
         <div class="form-group">
-          <label for='newPwd'>New Password</label>
-          <input class="form-control" name='newPwd' id='newPwd' type='password'><br>
+          <label for='role'>Role</label>
+          <select class="form-control" name="role">
+            <option>Normal User</option>
+            <option value="restricted">Restricted</option>
+            <option value="admin">Admin</option>
+          </select>
         </div>
         <div class="form-group">
-          <label for='confirm'>Old Password</label>
-          <input class="form-control" name='confirm' id='confirm' type='password'><br>
+          <label for='confirm'>Admin Password</label>
+          <input class="form-control" name='adminPwd' id='confirm' type='password'><br>
         </div>
         <div class="form-group">
           <input class="btn btn-primary" type='submit' value='Save'>
         </div>
       </form>
+      <hr/>
+      <a class="btn btn-danger" href="{{ url_for('admin.delete', id=user['id'])}}">Delete</a>
     </div>
   </div>
 {% endblock %}

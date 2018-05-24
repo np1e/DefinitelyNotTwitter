@@ -3,12 +3,6 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  {% if post %}
-    {% for post in posts %}
-      {% from '_post.html' import display_post %}
-      {{ display_post(post) }}
-    {% endfor %}
-    {% endif %}
   {% if posts %}
     {% for post in posts %}
       {% from '_post.html' import display_post %}

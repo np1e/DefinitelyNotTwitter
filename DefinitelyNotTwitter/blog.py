@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from DefinitelyNotTwitter.database import get_db
 from . import user
 from . import database as db
+from DefinitelyNotTwitter.user import isRestricted
 from DefinitelyNotTwitter.auth import login_required
 bp = Blueprint('blog', __name__, url_prefix='/blog')
 
@@ -18,12 +19,12 @@ def feedpage(page):
     error = None
 
     allPosts = db.execute(
-    'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid', (g.user['id'],)
+        'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid AND reviewed = 0', (g.user['id'],)
     ).fetchall()
     pagecount = int(len(allPosts) / 5)+1
 
     posts = db.execute(
-    'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid ORDER BY created DESC LIMIT 5 OFFSET ?', (g.user['id'], str(page*5))
+        'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid AND reviewed = 0 ORDER BY created DESC LIMIT 5 OFFSET ?', (g.user['id'], str(page*5))
     ).fetchall()
 
     if posts is None:
@@ -50,7 +51,7 @@ def create():
 
         if error is None:
             db.execute(
-                'INSERT INTO post(uid, content) VALUES (?, ?)', (g.user['id'], content)
+                'INSERT INTO post(uid, content, reviewed) VALUES (?, ?, ?)', (g.user['id'], content, g.user['restricted'])
             )
             db.commit()
             return redirect(url_for('user.show_profile', id = g.user['id']))

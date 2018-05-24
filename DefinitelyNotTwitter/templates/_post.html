@@ -9,6 +9,12 @@
     {% endif %}
     <a href="../user/{{ post['uid'] }}"><h1>{{ post['name'] }}</h1></a>
     <p>{{ post['created'].strftime("%d.%m.%Y | %H:%M") }}</p>
+    {% if post['reviewed'] == 1 %}
+      <a class="btn btn-success" href="{{ url_for('admin.release_post', pid = post['pid']) }}">Release</a>
+    {% endif %}
+    {% if g.user['admin'] == 1 or g.user['id'] == post['uid'] %}
+      <a class="btn btn-danger" href="{{ url_for('admin.delete_post', pid = post['pid']) }}">Delete</a>
+    {% endif %}
   </div>
   <div class="panel-body">
     {{ post['content'] }}

@@ -34,7 +34,11 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Admin <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url_for('admin.user_view') }}">Users</a></li>
+<<<<<<< HEAD
                   <li><a href="{{ url_for('admin.admin_panel') }}">Reviewpanel <span class="badge">42</span></a></li>
+=======
+                  <li><a href="{{ url_for('admin.admin_panel') }}">Reviewpanel <span class="badge">{{ g.postcount }}</span></a></li>
+>>>>>>> 0f011002c8172c8d7f9744107c76108c2863ec74
                 </ul>
               </li>
               {% endif %}
@@ -53,10 +57,15 @@
 
     <section class="row content container-fluid">
         {% block lead %}{% endblock %}
+        {% if g.user['restricted'] == 1 %}
+        <div class="alert alert-warning flash">
+          You were restricted by an admin. All your posts will have to be reviewed by an admin before they will be publicly visible.
+        </div>
+        {% endif %}
         {% for message in get_flashed_messages() %}
-      <div class="alert alert-warning flash">
-        {{ message }}
-      </div>
+          <div class="alert alert-warning flash">
+            {{ message }}
+          </div>
         {% endfor %}
       <div class="col-md-12 col-sm-12">
         {% block content %}{% endblock %}
