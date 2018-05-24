@@ -11,7 +11,8 @@ CREATE TABLE user (
   password TEXT NOT NULL,
   admin INTEGER DEFAULT 0,
   registered TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  avatar INTEGER DEFAULT 0
+  avatar INTEGER DEFAULT 0,
+  restricted INTEGER DEFAULT 0
 );
 
 CREATE TABLE post (
@@ -27,12 +28,5 @@ CREATE TABLE follows (
   uid INTEGER NOT NULL,
   PRIMARY KEY (fid, uid),
   FOREIGN KEY (fid) REFERENCES user (id),
-  FOREIGN KEY (uid) REFERENCES user (id)
-);
-
-CREATE TABLE flags (
-  uid INTEGER NOT NULL,
-  flag TEXT NOT NULL,
-  PRIMARY KEY (uid, flag),
   FOREIGN KEY (uid) REFERENCES user (id)
 );
