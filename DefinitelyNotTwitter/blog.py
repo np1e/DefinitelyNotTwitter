@@ -25,6 +25,7 @@ def feed():
 
     if error is None:
         return render_template('blog/index.html', posts = posts)
+        
     flash(error)
 
     return render_template('blog/index.html')

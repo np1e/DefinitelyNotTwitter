@@ -1,20 +1,26 @@
 {% extends "bootstrap/base.html" %}
-  {% block head %}
-    {% block metas %}
-      {{ super() }}
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      {% endblock %}
-    {% block styles %}
-      {{ super() }}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block html %}
+  {% block head %}{% endblock %}
+  {% block metas %}
+    {{ super() }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {% endblock %}
+  {% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   {% endblock %}
 
+<<<<<<< HEAD
   {% block body %}
     <div class="col-md-8 col-xs-8 col-md-offset-2 col-xs-offset-2">
+=======
+
+  <body>
+    <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+>>>>>>> 22d7fe72e9ab0546673fffbd494d861c80922a8b
       <nav class="navbar">
         <div class="container-fluid">
           <div class="collapse navbar-collapse">
@@ -29,7 +35,13 @@
               <li class="nav-item"><a href="{{ url_for('auth.register') }}">Register</a></li>
               {% endif %}
               {% if g.user['admin'] == 1 %}
-              <li class="nav-item"><a href="{{ url_for('admin.admin_view') }}">Admin</a></li>
+              <li class="dropdown nav-item">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Admin <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url_for('admin.user_view') }}">Users</a></li>
+                  <li><a href="{{ url_for('admin.review_panel') }}">Reviewpanel <span class="badge">42</span></a></li>
+                </ul>
+              </li>
               {% endif %}
             </ul>
             <form class = "navbar-form navbar-right" method='post' action="/search/">
@@ -44,7 +56,10 @@
         </div>
       </nav>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 22d7fe72e9ab0546673fffbd494d861c80922a8b
     <section class="row content container-fluid">
         {% block lead %}{% endblock %}
         {% for message in get_flashed_messages() %}
@@ -52,14 +67,15 @@
         {{ message }}
       </div>
         {% endfor %}
-      <div class="col-md-12">
+      <div class="col-md-12 col-sm-12">
         {% block content %}{% endblock %}
       </div>
     </section>
   </div>
 
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="js/bootstrap.min.js"></script>
-  {% endblock %}
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+{% endblock %}

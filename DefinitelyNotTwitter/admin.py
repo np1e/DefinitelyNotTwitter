@@ -13,8 +13,8 @@ from DefinitelyNotTwitter.auth import login_required
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-@login_required
 @bp.route('/')
+@login_required
 def admin_view():
     db = get_db()
     from DefinitelyNotTwitter.user import get_user
@@ -25,4 +25,4 @@ def admin_view():
     else:
         error = "You are not an admin. Booh!"
         flash(error)
-        return redirect(url_for('blog'))
+        return redirect(url_for('blog.feed'))

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Profile - {{ user['name'] }}{% endblock %}
 {% block content %}
+<<<<<<< HEAD
   <div class="col-sm-4 user-profile">
 
 
@@ -12,6 +13,14 @@
       {% if user['descrip']%}
         Description: {{ user['descrip'] }}<br>
       {% endif %}
+=======
+  {{ super() }}
+  <div class="col-sm-6 user-profile">
+    Username: {{ user['name'] }}<br>
+  {% if user['descrip']%}
+    Description: {{ user['descrip'] }}<br>
+  {% endif %}
+>>>>>>> 22d7fe72e9ab0546673fffbd494d861c80922a8b
   {% if g.user['id'] == user['id'] %}
     <a class="action" href="{{ url_for('user.edit_user', id = g.user['id']) }}">Edit your profile</a>
   {% endif %}
