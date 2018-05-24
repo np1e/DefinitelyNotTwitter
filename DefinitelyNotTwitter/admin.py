@@ -38,7 +38,36 @@ def user_view():
         flash(error)
         return redirect(url_for('blog.feed'))
 
+<<<<<<< HEAD
 @bp.route('/panel')
 def admin_panel():
 
     return render_template('admin/')
+=======
+
+@bp.route('/userview')
+@admin_required
+def user_view():
+
+
+    return render_template('admin/userview.html')
+
+@bp.route('/review')
+@admin_required
+def review_panel():
+
+    
+    return render_template('admin/panel.html')
+
+@login_required
+def admin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user['admin'] != 1:
+            error = "You have no admin privileges!"
+            flash(error)
+            return redirect(url_for('user.show_profile', id = g.user['id']))
+
+        return view(**kwargs)
+    return wrapped_view
+>>>>>>> feature_admin
