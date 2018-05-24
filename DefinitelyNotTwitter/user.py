@@ -44,15 +44,12 @@ def show_profile(id):
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
-<<<<<<< HEAD
-=======
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 from DefinitelyNotTwitter.auth import login_required
->>>>>>> 1356ebe00fa478db2909aee5f8519fd1afd3cca2
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user(id):

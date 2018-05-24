@@ -3,17 +3,16 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<<<<<<< HEAD
-  {% for post in posts %}
-    {% from '_post.html' import display_post %}
-    {{ display_post(post) }}
-  {% endfor %}
-=======
+  {% if post %}
+    {% for post in posts %}
+      {% from '_post.html' import display_post %}
+      {{ display_post(post) }}
+    {% endfor %}
+    {% endif %}
   {% if posts %}
     {% for post in posts %}
       {% from '_post.html' import display_post %}
-      {{ display_post(post['uid'], post['content'], post['created']) }}
+      {{ display_post(post) }}
     {% endfor %}
   {% endif %}
->>>>>>> 1356ebe00fa478db2909aee5f8519fd1afd3cca2
 {% endblock %}
