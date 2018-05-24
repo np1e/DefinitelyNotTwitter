@@ -1,12 +1,13 @@
 import os
 
-from flask import Flask
+from flask import Flask, g, redirect, url_for
 from flask_bootstrap import Bootstrap
 from . import database as db
 from . import auth
 from . import user
 from . import blog
 from . import search
+from . import admin
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -25,6 +26,13 @@ def create_app():
     app.register_blueprint(blog.bp)
     app.register_blueprint(user.bp)
     app.register_blueprint(search.bp)
-    app.add_url_rule('/', endpoint='index')
+    app.register_blueprint(admin.bp)
+
+    @app.route('/')
+    def index():
+        if g.user:
+            return redirect(url_for('blog.feed'))
+        else:
+            return redirect(url_for('auth.login'))
 
     return app
