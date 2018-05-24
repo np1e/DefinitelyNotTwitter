@@ -1,7 +1,8 @@
-.nav { background:#333; text-align:center; padding:10px; }
-.nav nav a { color:#fff; text-decoration: underline; }
+.navbar {
+  background: #DADFE1;
+}
 .content { margin-top:10px; }
 .content .user-profile { background:#333; padding:20px;color:#fff;}
 .content .guide { padding:0 0 0 5px; }
 .content .login, .content .register, .content .edit { padding:0 5px 0 0; }
-.content .login .wrap, .content .guide .wrap, .content .edit .wrap {border:1px solid #ccc; padding:40px;}
+.content .login .wrap, .content .guide .wrap, .content .edit .wrap {border:1px; solid #ccc; padding:40px;}
