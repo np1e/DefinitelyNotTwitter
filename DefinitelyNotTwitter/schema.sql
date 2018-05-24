@@ -8,7 +8,8 @@ CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   descrip TEXT,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  admin INTEGER DEFAULT 0
 );
 
 CREATE TABLE post (
@@ -24,13 +25,6 @@ CREATE TABLE follows (
   uid INTEGER NOT NULL,
   PRIMARY KEY (fid, uid),
   FOREIGN KEY (fid) REFERENCES user (id),
-  FOREIGN KEY (uid) REFERENCES user (id)
-);
-
-CREATE TABLE role (
-  uid INTEGER NOT NULL,
-  role TEXT NOT NULL,
-  PRIMARY KEY (uid, role),
   FOREIGN KEY (uid) REFERENCES user (id)
 );
 
