@@ -17,7 +17,7 @@ def feed():
     db = get_db()
     error = None
     posts = db.execute(
-    'SELECT * FROM post NATURAL LEFT OUTER JOIN (SELECT uid FROM follows WHERE fid = ?) ORDER BY created DESC', (g.user['id'],)
+    'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid', (g.user['id'],)
     ).fetchall()
 
     if posts is None:
@@ -25,7 +25,7 @@ def feed():
 
     if error is None:
         return render_template('blog/index.html', posts = posts)
-        
+
     flash(error)
 
     return render_template('blog/index.html')
