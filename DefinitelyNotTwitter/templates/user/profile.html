@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}Profile - {{ user['name'] }}{% endblock %}
 {% block content %}
-  <div class="col-sm-6 user-profile">
-    Username: {{ user['name'] }}<br>
-  {% if user['descrip']%}
-    Description: {{ user['descrip'] }}<br>
-  {% endif %}
+  <div class="col-sm-4 user-profile">
+
+
+      {% if user['avatar'] == 1 %}
+        <img src="/static/img/{{ user['id'] }}.jpg">
+      {% endif %}
+
+      Username: {{ user['name'] }}<br>
+      {% if user['descrip']%}
+        Description: {{ user['descrip'] }}<br>
+      {% endif %}
   {% if g.user['id'] == user['id'] %}
-    <a class="action" href="{{ url_for('user.edit_user', id = g.user['id']) }}">Edit</a>
+    <a class="action" href="{{ url_for('user.edit_user', id = g.user['id']) }}">Edit your profile</a>
   {% endif %}
   {% if g.user['id'] != user['id'] and follows == false %}
     <a class="action" href="{{ url_for('user.follow', id = user['id']) }}">Follow</a>
@@ -15,8 +21,10 @@
     <a class="action" href="{{ url_for('user.unfollow', id = user['id']) }}">Unfollow</a>
   {% endif %}
   </div>
-  {% for post in posts %}
-  {% from '_post.html' import display_post %}
-  {{ display_post(post) }}
-  {% endfor %}
+  <div class="col-sm-8 posts">
+    {% for post in posts %}
+    {% from '_post.html' import display_post %}
+    {{ display_post(post) }}
+    {% endfor %}
+  </div>
 {% endblock %}

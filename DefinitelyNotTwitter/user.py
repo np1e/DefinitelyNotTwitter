@@ -44,15 +44,7 @@ def show_profile(id):
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
-<<<<<<< HEAD
-=======
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 from DefinitelyNotTwitter.auth import login_required
->>>>>>> 1356ebe00fa478db2909aee5f8519fd1afd3cca2
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user(id):
@@ -66,12 +58,15 @@ def edit_user(id):
         db = get_db()
         error = None
         file = None
+        imgAdded = False
 
         # check if the post request has the file part
         if 'file' in request.files:
               f = request.files['file']
               filename = secure_filename(f.filename)
-              f.save(os.path.join(current_app.config['UPLOAD_FOLDER'], str(g.user["id"])+".jpg"))
+              filetype = filename.rsplit('.', 1)[1].lower()
+              f.save(os.path.join(current_app.config['UPLOAD_FOLDER'], str(g.user["id"])+"."+filetype))
+              imgAdded = True
 
         if not confirm:
             error = 'Password is required to confirm.'
@@ -79,18 +74,22 @@ def edit_user(id):
             error = 'Incorrect password.'
 
         if error is None:
-            if username is not None:
+            if username is not "":
                 db.execute(
                     'UPDATE user SET name = ? WHERE id = ?', (username, id,)
                 )
-            if desc is not None:
+            if desc is not "":
                 db.execute(
                     'UPDATE user SET descrip = ? WHERE id = ?', (desc, id,)
                 )
-            if newPwd is not None:
+            if newPwd is not "":
                 db.execute(
                     'UPDATE user SET password = ? WHERE id = ?',
                     (generate_password_hash(newPwd), id,)
+                )
+            if imgAdded is True:
+                db.execute(
+                    'UPDATE user SET avatar = ? WHERE id = ?', (1, id,)
                 )
             db.commit()
             return redirect(url_for('user.show_profile', id = user['id']))
