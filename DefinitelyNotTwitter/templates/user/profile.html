@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Profile - {{ user['name'] }}{% endblock %}
 {% block content %}
+  {{ super() }}
   <div class="col-sm-6 user-profile">
     Username: {{ user['name'] }}<br>
   {% if user['descrip']%}
