@@ -9,7 +9,9 @@ CREATE TABLE user (
   name TEXT NOT NULL,
   descrip TEXT,
   password TEXT NOT NULL,
-  admin INTEGER DEFAULT 0
+  admin INTEGER DEFAULT 0,
+  registered TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  avatar INTEGER DEFAULT 0
 );
 
 CREATE TABLE post (
