@@ -105,7 +105,7 @@ def edit_user(id):
     if g.user['id'] == id or g.user['admin'] == 1:
         return render_template('user/edit.html', user = user)
     else:
-        return redirect(url_for('blog.feed'))
+        return redirect(url_for('blog.feedpage'))
 
 from DefinitelyNotTwitter.admin import admin_required
 @admin_required
