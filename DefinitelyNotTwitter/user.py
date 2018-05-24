@@ -39,11 +39,15 @@ def show_profile(id):
     following = follows(g.user['id'], user['id'])
 
     posts = db.execute(
-        'SELECT * FROM post WHERE uid = ? ORDER BY created DESC', (id,)
+        'SELECT * FROM post, user WHERE uid = ? AND user.id = ? ORDER BY created DESC', (id, id)
     ).fetchall()
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f9ae26e13444ba95503a25f805b1315071bdf578
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
