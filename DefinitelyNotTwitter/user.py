@@ -39,19 +39,17 @@ def show_profile(id):
     following = follows(g.user['id'], user['id'])
 
     posts = db.execute(
-        'SELECT * FROM post WHERE uid = ? ORDER BY created DESC', (id,)
+        'SELECT * FROM post, user WHERE uid = ? AND user.id = ? ORDER BY created DESC', (id, id)
     ).fetchall()
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
-<<<<<<< HEAD
-=======
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
->>>>>>> 22d7fe72e9ab0546673fffbd494d861c80922a8b
 from DefinitelyNotTwitter.auth import login_required
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
