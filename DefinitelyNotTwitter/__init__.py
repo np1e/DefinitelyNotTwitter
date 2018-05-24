@@ -12,9 +12,13 @@ from . import admin
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
     Bootstrap(app)
+
+    UPLOAD_FOLDER = 'DefinitelyNotTwitter/static/img/'
+
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE = os.path.join(app.instance_path, 'DefinitelyNotTwitter.sqlite'),
+        UPLOAD_FOLDER = UPLOAD_FOLDER
     )
     try:
         os.makedirs(app.instance_path)

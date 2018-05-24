@@ -1,11 +1,11 @@
-{% macro display_post(userid, content, created) %}
+{% macro display_post(post) %}
   <div class="row post">
       <div class="col-xs-12 row">
-          <div class="col-xs-8 post-userdata">{{ userid }}</div>
-          <div class="col-xs-4 post-date">{{ created }}</div>
+          <div class="col-xs-8 post-userdata">{{ post['uid'] }}</div>
+          <div class="col-xs-4 post-date">{{ post['created'].strftime("%d.%m.%Y | %H:%M") }}</div>
       </div>
       <div class="col-xs-12 row">
-          <div class="col-xs-4 post-content">{{ content }}</div>
+          <div class="col-xs-4 post-content">{{ post['content'] }}</div>
       </div>
   </div>
 {% endmacro %}

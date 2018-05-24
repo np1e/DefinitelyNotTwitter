@@ -3,7 +3,7 @@ import os
 from . import auth as auth
 
 from flask import(
-    Blueprint, flash, redirect, render_template, request, session, url_for, g
+    Blueprint, flash, redirect, render_template, request, session, url_for, g, current_app
 )
 from werkzeug.exceptions import abort
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -44,12 +44,15 @@ def show_profile(id):
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
+<<<<<<< HEAD
+=======
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 from DefinitelyNotTwitter.auth import login_required
+>>>>>>> 1356ebe00fa478db2909aee5f8519fd1afd3cca2
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user(id):
@@ -62,6 +65,13 @@ def edit_user(id):
         confirm = request.form['confirm']
         db = get_db()
         error = None
+        file = None
+
+        # check if the post request has the file part
+        if 'file' in request.files:
+              f = request.files['file']
+              filename = secure_filename(f.filename)
+              f.save(os.path.join(current_app.config['UPLOAD_FOLDER'], str(g.user["id"])+".jpg"))
 
         if not confirm:
             error = 'Password is required to confirm.'

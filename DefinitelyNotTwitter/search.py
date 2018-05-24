@@ -24,7 +24,7 @@ def search():
 
         if error is None:
             results = db.execute(
-            'SELECT content FROM post WHERE content LIKE "%'+query+'%"'
+            'SELECT * FROM post WHERE content LIKE "%'+query+'%"'
             ).fetchall()
 
         if results is None:
