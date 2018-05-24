@@ -13,16 +13,34 @@ from DefinitelyNotTwitter.auth import login_required
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-@bp.route('/')
-@login_required
-def admin_view():
+def admin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        elif g.user['admin'] != 1:
+            return redirect(url_for('blog.feed'))
+
+        return view(**kwargs)
+    return wrapped_view
+
+@bp.route('/user_view')
+@admin_required
+def user_view():
     db = get_db()
     from DefinitelyNotTwitter.user import get_user
-    user = get_user(g.user['id'])
 
-    if user['admin'] == 1:
-        return render_template('adminview.html')
-    else:
-        error = "You are not an admin. Booh!"
-        flash(error)
-        return redirect(url_for('blog.feed'))
+    users = db.execute(
+        'select * from user as u LEFT OUTER JOIN (select uid, count(uid) as follower from follows group by uid) as f on u.id = f.uid;'
+    ).fetchall()
+
+
+
+    return render_template('admin/userview.html', users = users)
+
+
+@bp.route('/panel')
+@admin_required
+def admin_panel():
+    db = get(db)
+    return render_template('admin/panel.html')
