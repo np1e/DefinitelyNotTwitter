@@ -11,20 +11,26 @@ from . import database as db
 from DefinitelyNotTwitter.auth import login_required
 bp = Blueprint('blog', __name__, url_prefix='/blog')
 
-@bp.route('/')
+@bp.route('/<int:page>')
 @login_required
-def feed():
+def feedpage(page):
     db = get_db()
     error = None
-    posts = db.execute(
+
+    allPosts = db.execute(
     'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid', (g.user['id'],)
+    ).fetchall()
+    pagecount = int(len(allPosts) / 5)+1
+
+    posts = db.execute(
+    'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid ORDER BY created DESC LIMIT 5 OFFSET ?', (g.user['id'], str(page*5))
     ).fetchall()
 
     if posts is None:
         error = "No posts available."
 
     if error is None:
-        return render_template('blog/index.html', posts = posts)
+        return render_template('blog/index.html', posts = posts, page = page, pagecount = pagecount)
 
     flash(error)
 

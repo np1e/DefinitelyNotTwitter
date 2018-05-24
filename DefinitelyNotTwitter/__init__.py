@@ -35,7 +35,7 @@ def create_app():
     @app.route('/')
     def index():
         if g.user:
-            return redirect(url_for('blog.feed'))
+            return redirect(url_for('blog.feedpage', page=0))
         else:
             return redirect(url_for('auth.login'))
 

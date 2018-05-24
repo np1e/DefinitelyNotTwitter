@@ -1,0 +1,28 @@
+{% macro display_pagination(page, pagecount) %}
+
+{% if pagecount > 1 %}
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+  {% for count in range(pagecount) %}
+    {% if count == page %}
+      <li><a href="{{ count }}" class="active">{{ count }} <span class="sr-only">(current)</span></a></li>
+    {% else %}
+      <li><a href="{{ count }}">{{ count }}</a></li>
+    {% endif %}
+  {% endfor %}
+  <li>
+    <a href="#" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  </ul>
+  </nav>
+{% endif %}
+
+
+{% endmacro %}
