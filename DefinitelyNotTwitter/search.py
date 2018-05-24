@@ -9,9 +9,9 @@ from DefinitelyNotTwitter.database import get_db
 from . import user
 from . import database as db
 
-bp = Blueprint('search', __name__)
+bp = Blueprint('search', __name__, url_prefix='/search')
 
-@bp.route('/search', methods=('GET', 'POST'))
+@bp.route('/', methods=('GET', 'POST'))
 def search():
     if request.method == 'POST':
         db = get_db()
@@ -35,3 +35,19 @@ def search():
 
         flash(error)
     return render_template('search/results.html')
+
+@bp.route('/advanced', methods=('GET', 'POST'))
+def advanced():
+    db = get_db()
+
+    if request.method == 'POST':
+        userStr = request.form['username']
+        content = request.form['content']
+        userSearch = request.form['userSearch']
+        stringSearch = request.form['stringSearch']
+        error = None
+
+        if userSearch:
+            users = db.execute(
+                'SELECT * FROM user WHERE name LIKE ?', ('%' + userStr + '%')
+            )
