@@ -44,10 +44,6 @@ def show_profile(id):
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f9ae26e13444ba95503a25f805b1315071bdf578
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -57,6 +53,7 @@ from DefinitelyNotTwitter.auth import login_required
 @bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user(id):
+
     user = get_user(id)
 
     if request.method == 'POST':
@@ -105,7 +102,37 @@ def edit_user(id):
 
         flash(error)
 
-    return render_template('user/edit.html', user = user)
+    if g.user['id'] == id or g.user['admin'] == 1:
+        return render_template('user/edit.html', user = user)
+    else:
+        return redirect(url_for('blog.feed'))
+
+from DefinitelyNotTwitter.admin import admin_required
+@admin_required
+@bp.route('/<int:id>/restrict')
+def restrict_user(id):
+
+    db = get_db()
+
+    db.execute(
+        'UPDATE user SET restricted = 1 WHERE id = ?', (id,)
+    )
+    db.commit()
+
+    return redirect(url_for('admin.user_view'))
+
+@admin_required
+@bp.route('/<int:id>/unrestrict')
+def unrestrict_user(id):
+
+    db = get_db()
+
+    db.execute(
+        'UPDATE user SET restricted = 0 WHERE id = ?', (id,)
+    )
+    db.commit()
+
+    return redirect(url_for('admin.user_view'))
 
 @bp.route('/<int:id>/follow')
 def follow(id):
