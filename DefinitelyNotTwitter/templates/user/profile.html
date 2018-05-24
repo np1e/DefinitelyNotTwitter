@@ -16,7 +16,7 @@
   {% endif %}
   </div>
   {% for post in posts %}
-    {% from '_post.html' import display_post %}
-    {{ display_post(post['uid'], post['content'], post['created']) }}
+  {% from '_post.html' import display_post %}
+  {{ display_post(post) }}
   {% endfor %}
 {% endblock %}

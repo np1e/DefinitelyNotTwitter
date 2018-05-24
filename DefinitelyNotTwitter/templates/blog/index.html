@@ -5,6 +5,6 @@
 {% block content %}
   {% for post in posts %}
     {% from '_post.html' import display_post %}
-    {{ display_post(post['uid'], post['content'], post['created']) }}
+    {{ display_post(post) }}
   {% endfor %}
 {% endblock %}
