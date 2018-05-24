@@ -3,15 +3,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<<<<<<< HEAD
-=======
   {% if post %}
     {% for post in posts %}
       {% from '_post.html' import display_post %}
       {{ display_post(post) }}
     {% endfor %}
     {% endif %}
->>>>>>> 22d7fe72e9ab0546673fffbd494d861c80922a8b
   {% if posts %}
     {% for post in posts %}
       {% from '_post.html' import display_post %}
