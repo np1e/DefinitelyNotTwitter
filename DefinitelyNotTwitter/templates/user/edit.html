@@ -10,7 +10,7 @@
       <form method='post' enctype='multipart/form-data'>
         <div class="form-group">
           <label for='username'>Username</label>
-          <input class="form-control" name='username' id='username'><br>
+          <input class="form-control" name='username' id='username' placeholder="{{ user['name'] }}"><br>
         </div>
         <div class="form-group">
           <label for='file'>Upload profile picture</label><br>
@@ -21,7 +21,7 @@
         </div>
         <div class="form-group"><br>
           <label for='desc'>Description</label>
-          <textarea class="form-control" name='desc' id='desc'></textarea><br>
+          <textarea class="form-control" name='desc' id='desc' placeholder="{{ user['descrip'] }}"></textarea><br>
         </div>
         <div class="form-group">
           <label for='newPwd'>New Password</label>
