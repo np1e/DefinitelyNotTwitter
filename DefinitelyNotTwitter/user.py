@@ -32,6 +32,12 @@ def follows(fid, uid):
     else:
         return False
 
+def isRestricted(id):
+    if get_user(id)['restricted'] == 1:
+        return True
+    else:
+        return False
+
 @bp.route('/<int:id>')
 def show_profile(id):
     db = get_db()
@@ -39,7 +45,7 @@ def show_profile(id):
     following = follows(g.user['id'], user['id'])
 
     posts = db.execute(
-        'SELECT * FROM post, user WHERE uid = ? AND user.id = ? ORDER BY created DESC', (id, id)
+        'SELECT * FROM post, user WHERE uid = ? AND user.id = ? AND reviewed = 0 ORDER BY created DESC', (id, id)
     ).fetchall()
 
     return render_template('user/profile.html', user = user, follows = following, posts = posts)
@@ -93,7 +99,7 @@ def edit_user(id):
                     'UPDATE user SET password = ? WHERE id = ?',
                     (generate_password_hash(newPwd), id,)
                 )
-            if imgAdded is True:
+            if imgAdded:
                 db.execute(
                     'UPDATE user SET avatar = ? WHERE id = ?', (1, id,)
                 )
@@ -102,37 +108,11 @@ def edit_user(id):
 
         flash(error)
 
-    if g.user['id'] == id or g.user['admin'] == 1:
+    if g.user['id'] == id:
         return render_template('user/edit.html', user = user)
     else:
         return redirect(url_for('blog.feedpage'))
 
-from DefinitelyNotTwitter.admin import admin_required
-@admin_required
-@bp.route('/<int:id>/restrict')
-def restrict_user(id):
-
-    db = get_db()
-
-    db.execute(
-        'UPDATE user SET restricted = 1 WHERE id = ?', (id,)
-    )
-    db.commit()
-
-    return redirect(url_for('admin.user_view'))
-
-@admin_required
-@bp.route('/<int:id>/unrestrict')
-def unrestrict_user(id):
-
-    db = get_db()
-
-    db.execute(
-        'UPDATE user SET restricted = 0 WHERE id = ?', (id,)
-    )
-    db.commit()
-
-    return redirect(url_for('admin.user_view'))
 
 @bp.route('/<int:id>/follow')
 def follow(id):
