@@ -20,14 +20,18 @@
         {% endif %}
         <td>{{ user['registered'] }}</td>
         <td>
-          <a class="btn btn-primary" href="{{ url_for('user.edit_user', id=user['id']) }}">Edit</a>
+          <a class="btn btn-primary" href="{{ url_for('admin.edit_user', id=user['id']) }}">Edit</a>
           {% if user['restricted'] == 1 %}
-            <a class="btn btn-warning" href="{{ url_for('user.unrestrict_user', id = user['id']) }}">Unrestrict</a>
+            <a class="btn btn-warning" href="{{ url_for('admin.unrestrict', id = user['id']) }}">Unrestrict</a>
           {% else %}
-            <a class="btn btn-warning" href="{{ url_for('user.restrict_user', id = user['id']) }}">Restrict</a>
+            <a class="btn btn-warning" href="{{ url_for('admin.restrict', id = user['id']) }}">Restrict</a>
           {% endif %}
-          <a class="btn btn-success">Promote</a>
-          <a class="btn btn-danger">Delete</a>
+          {% if user['admin'] == 1 %}
+            <a class="btn btn-success" href="{{ url_for('admin.strip', id = user['id']) }}">Strip</a>
+          {% else %}
+            <a class="btn btn-success" href="{{ url_for('admin.promote', id = user['id']) }}">Promote</a>
+          {% endif %}
+          <a class="btn btn-danger" href="{{ url_for('admin.delete', id = user['id']) }}">Delete</a>
         </td>
       </tr>
       {% endfor %}

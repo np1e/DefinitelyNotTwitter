@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit User - {{ user['name'] }}{% endblock %}
+{% block content %}
+  {{ super() }}
+  <div class="col-sm-6 edit">
+    <div class="wrap">
+      <h2>Account bearbeiten:</h2>
+      <hr>
+      <form method='post' enctype='multipart/form-data'>
+        <div class="form-group">
+          <label for='username'>Username</label>
+          <input class="form-control" name='username' id='username' placeholder="{{ user['name'] }}"><br>
+        </div>
+        <div class="form-group">
+          <label for='file'>Upload profile picture</label><br>
+          <label class="btn btn-primary" for="my-file-selector">
+              <input id="my-file-selector" name="file" type="file" style="display:none;">
+              Select file
+          </label>
+        </div>
+        <div class="form-group"><br>
+          <label for='desc'>Description</label>
+          <textarea class="form-control" name='desc' id='desc' placeholder="{{ user['descrip'] }}"></textarea><br>
+        </div>
+        <hr/>
+        <div class="form-group">
+          <label for='role'>Role</label>
+          <select class="form-control" name="role">
+            <option>Normal User</option>
+            <option value="restricted">Restricted</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for='confirm'>Admin Password</label>
+          <input class="form-control" name='adminPwd' id='confirm' type='password'><br>
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" type='submit' value='Save'>
+        </div>
+      </form>
+      <hr/>
+      <a class="btn btn-danger" href="{{ url_for('admin.delete', id=user['id'])}}">Delete</a>
+    </div>
+  </div>
+{% endblock %}
