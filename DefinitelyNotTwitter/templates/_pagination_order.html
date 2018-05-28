@@ -1,0 +1,46 @@
+{% macro display_pagination(page, pagecount, order) %}
+
+{% if pagecount > 1 %}
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {% if page > 0 %}
+      <li>
+        {% set previous = page - 1 -%}
+        <a href="{{ previous }}?order={{ order }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a href="#?order={{ order }}" aria-label="Previous" >
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% endif %}
+  {% for count in range(pagecount) %}
+    {% if count == page %}
+      <li class="active"><a href="{{ count }}?order={{ order }}">{{ count + 1 }} <span class="sr-only">(current)</span></a></li>
+    {% else %}
+      <li><a href="{{ count }}?order={{ order }}">{{ count + 1}}</a></li>
+    {% endif %}
+  {% endfor %}
+  {% if page == pagecount-1 %}
+    <li class="disabled">
+      <a href="#?order={{ order }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  {% else %}
+    <li>
+      {% set next = page + 1 -%}
+      <a href="{{ next }}?order={{ order }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  {% endif %}
+  </ul>
+  </nav>
+{% endif %}
+
+
+{% endmacro %}

@@ -12,7 +12,7 @@ from DefinitelyNotTwitter.user import isRestricted
 from DefinitelyNotTwitter.auth import login_required
 bp = Blueprint('blog', __name__, url_prefix='/blog')
 
-@bp.route('/<int:page>')
+@bp.route('<int:page>')
 @login_required
 def feedpage(page):
     db = get_db()
@@ -23,15 +23,24 @@ def feedpage(page):
     ).fetchall()
     pagecount = int(len(allPosts) / 5)+1
 
-    posts = db.execute(
-        'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid AND reviewed = 0 ORDER BY created DESC LIMIT 5 OFFSET ?', (g.user['id'], str(page*5))
-    ).fetchall()
+    order = request.args.get("order")
+    if order == "asc":
+        posts = db.execute(
+            'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid AND reviewed = 0 ORDER BY created ASC LIMIT 5 OFFSET ?', (g.user['id'], str(page*5))
+        ).fetchall()
+    else:
+        posts = db.execute(
+            'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid AND reviewed = 0 ORDER BY created DESC LIMIT 5 OFFSET ?', (g.user['id'], str(page*5))
+        ).fetchall()
 
     if posts is None:
         error = "No posts available."
 
     if error is None:
-        return render_template('blog/index.html', posts = posts, page = page, pagecount = pagecount)
+        if order == "asc":
+            return render_template('blog/index.html', posts = posts, page = page, pagecount = pagecount, order="asc")
+        else:
+            return render_template('blog/index.html', posts = posts, page = page, pagecount = pagecount, order="desc")
 
     flash(error)
 

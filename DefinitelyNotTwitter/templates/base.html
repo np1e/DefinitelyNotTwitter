@@ -34,11 +34,8 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Admin <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url_for('admin.user_view') }}">Users</a></li>
-<<<<<<< HEAD
-                  <li><a href="{{ url_for('admin.admin_panel') }}">Reviewpanel <span class="badge">42</span></a></li>
-=======
                   <li><a href="{{ url_for('admin.admin_panel') }}">Reviewpanel <span class="badge">{{ g.postcount }}</span></a></li>
->>>>>>> 0f011002c8172c8d7f9744107c76108c2863ec74
+
                 </ul>
               </li>
               {% endif %}
