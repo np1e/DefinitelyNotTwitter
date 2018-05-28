@@ -26,17 +26,22 @@ def admin_required(view):
     return wrapped_view
 
 @bp.route('/user_view')
+@bp.route('/user_view/<sort>')
 @admin_required
-def user_view():
+def user_view(sort='id.asc'):
     db = get_db()
+    sortBy = sort.split('.')[0]
+    print(sortBy)
+    sortOrder = sort.split('.')[1]
+
 
     users = db.execute(
-        'select * from user as u LEFT OUTER JOIN (select uid, count(uid) as follower from follows group by uid) as f on u.id = f.uid;'
+        'SELECT * FROM user AS u LEFT OUTER JOIN (SELECT uid, count(uid) AS follower FROM follows GROUP BY uid) AS f ON u.id = f.uid ORDER BY ? {}'.format(sortOrder), (sortBy,)
     ).fetchall()
+    return render_template('admin/userview.html', users = users, sort='{}.{}'.format(sortBy, sortOrder))
 
 
 
-    return render_template('admin/userview.html', users = users)
 
 
 @bp.route('/')

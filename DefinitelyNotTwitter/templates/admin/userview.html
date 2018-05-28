@@ -3,11 +3,57 @@
 {% block content %}
   <table class="table table-hover">
     <tr>
-      <th>ID</th>
-      <th>Username</th>
-      <th># follower</th>
-      <th>Registered since</th>
-      <th>Actions</th>
+      <th>
+        {% if sort=='id.desc' %}
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        {% elif sort=='id.asc' %}
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        {% endif %}
+        {% if sort=='id.desc' %}
+          <a href="{{ url_for('admin.user_view', sort='id.asc')}}">ID</a>
+        {% else %}
+          <a href="{{ url_for('admin.user_view', sort='id.desc')}}">ID</a>
+        {% endif %}
+      </th>
+      <th>
+        {% if sort=='name.desc' %}
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        {% elif sort=='name.asc' %}
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        {% endif %}
+        {% if sort=='name.desc' %}
+          <a href="{{ url_for('admin.user_view', sort='name.asc')}}">Username</a>
+        {% else %}
+          <a href="{{ url_for('admin.user_view', sort='name.desc')}}">Username</a>
+        {% endif %}
+      </th>
+      <th>
+        {% if sort=='follower.desc' %}
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        {% elif sort=='follower.asc' %}
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        {% endif %}
+        {% if sort=='follower.desc' %}
+          <a href="{{ url_for('admin.user_view', sort='follower.asc')}}"># follower</a>
+        {% else %}
+          <a href="{{ url_for('admin.user_view', sort='follower.desc')}}"># follower</a>
+        {% endif %}
+      </th>
+      <th>
+        {% if sort=='registered.desc' %}
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        {% elif sort=='registered.asc' %}
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        {% endif %}
+        {% if sort=='registered.desc' %}
+          <a href="{{ url_for('admin.user_view', sort='registered.asc')}}">Registered since</a>
+        {% else %}
+          <a href="{{ url_for('admin.user_view', sort='registered.desc')}}">Registered since</a>
+        {% endif %}
+      </th>
+      <th>
+        Actions
+      </th>
     </tr>
     {% for user in users %}
       <tr>
