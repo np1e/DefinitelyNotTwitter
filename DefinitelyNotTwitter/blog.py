@@ -24,6 +24,7 @@ def feedpage(page):
     pagecount = int(len(allPosts) / 5)+1
 
     order = request.args.get("order")
+
     if order == "asc":
         posts = db.execute(
             'SELECT * FROM post NATURAL JOIN (SELECT uid FROM follows WHERE fid = ?)  JOIN user WHERE user.id = post.uid AND reviewed = 0 ORDER BY created ASC LIMIT 5 OFFSET ?', (g.user['id'], str(page*5))

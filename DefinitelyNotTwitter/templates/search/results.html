@@ -3,6 +3,20 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
+  <form action="refined" method='post' class="form-inline refinedsearch">
+    <div class="form-group">
+      <input class="form-control" name="username" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <input class="form-control" name='contentcontains' placeholder="Post text contains...">
+    </div>
+    <div class="form-group">
+      <input class="btn btn-primary" type="submit" value="Refined Search">
+    </div>
+  </form>
+  <br>
+
   {% for result in results %}
     {% from '_post.html' import display_post %}
     {{ display_post(result) }}
