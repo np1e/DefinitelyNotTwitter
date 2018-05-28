@@ -3,6 +3,9 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+  <a class="btn btn-success" href="?order=desc">Neuste zuerst</a>
+  <a class="btn btn-success" href="?order=asc">Älteste zuerst</a>
+  <br><br>
   {% if posts %}
     {% for post in posts %}
       {% from '_post.html' import display_post %}
@@ -11,7 +14,7 @@
   {% endif %}
 
 
-  {% from '_pagination.html' import display_pagination %}
-  {{ display_pagination(page, pagecount) }}
+  {% from '_pagination_order.html' import display_pagination %}
+  {{ display_pagination(page, pagecount, order) }}
 
 {% endblock %}
