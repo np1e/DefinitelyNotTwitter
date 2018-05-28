@@ -69,3 +69,27 @@ def create():
         flash(error)
 
     return render_template('blog/create.html')
+
+@bp.route('/delete/<int:id>')
+@login_required
+def delete(id):
+    db = get_db()
+    error = None
+
+    post = db.execute(
+        'SELECT * FROM post where pid = ?', (id,)
+    ).fetchone()
+
+    if post is not None:
+        if post['uid'] == g.user['id']:
+            db.execute(
+                'DELETE FROM post WHERE pid = ?', (id,)
+            )
+            db.commit()
+            return redirect(url_for('blog.feedpage', page=0))
+        else:
+            error = "Cannot delete others posts."
+    else:
+        error = "Post does not exist."
+    flash(error)
+    return redirect(url_for('blog.feedpage', page=0))
