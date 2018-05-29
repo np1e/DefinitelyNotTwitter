@@ -31,18 +31,14 @@ def admin_required(view):
 def user_view(sort='id.asc'):
     db = get_db()
     sortBy = sort.split('.')[0]
-    print(sortBy)
     sortOrder = sort.split('.')[1]
 
 
+    query = 'SELECT * FROM user AS u LEFT OUTER JOIN (SELECT uid, count(uid) AS follower FROM follows GROUP BY uid) AS f ON u.id = f.uid ORDER BY {} {}'.format(sortBy, sortOrder)
     users = db.execute(
-        'SELECT * FROM user AS u LEFT OUTER JOIN (SELECT uid, count(uid) AS follower FROM follows GROUP BY uid) AS f ON u.id = f.uid ORDER BY ? {}'.format(sortOrder), (sortBy,)
+        query
     ).fetchall()
     return render_template('admin/userview.html', users = users, sort='{}.{}'.format(sortBy, sortOrder))
-
-
-
-
 
 @bp.route('/')
 @bp.route('/<int:page>')
@@ -56,7 +52,7 @@ def admin_panel(page=0):
     pagecount = int(postcount / 5 + 1)
 
     posts = db.execute(
-        'SELECT * FROM post JOIN user WHERE post.uid = user.id AND post.reviewed = 1 ORDER BY created DESC LIMIT 5 OFFSET ?', (str(page*5))
+        'SELECT * FROM post JOIN user WHERE post.uid = user.id AND post.reviewed = 1 ORDER BY created DESC LIMIT 5 OFFSET ?', (str(page*5),)
     ).fetchall()
 
     return render_template('admin/panel.html', posts = posts, pagecount=pagecount, page=page)
@@ -120,12 +116,22 @@ def edit_user(id):
 def restrict(id):
 
     db = get_db()
+    user = get_user(id)
+    error = None
 
-    db.execute(
-        'UPDATE user SET restricted = 1 WHERE id = ?', (id,)
-    )
-    db.commit()
+    if user['restricted'] != 1:
+        error = "User already restricted."
+    elif user['admin'] == 1:
+        error = "Cannot restrict admins."
 
+    if error is None:
+        db.execute(
+            'UPDATE user SET restricted = 1 WHERE id = ?', (id,)
+        )
+        db.commit()
+        return redirect(url_for('admin.user_view'))
+
+    flash(error)
     return redirect(url_for('admin.user_view'))
 
 
@@ -134,12 +140,20 @@ def restrict(id):
 def unrestrict(id):
 
     db = get_db()
+    user = get_user(id)
+    error = None
 
-    db.execute(
-        'UPDATE user SET restricted = 0 WHERE id = ?', (id,)
-    )
-    db.commit()
+    if user['restricted'] != 1:
+        error = "User already unrestricted."
 
+    if error is None:
+        db.execute(
+            'UPDATE user SET restricted = 0 WHERE id = ?', (id,)
+        )
+        db.commit()
+        return redirect(url_for('admin.user_view'))
+
+    flash(error)
     return redirect(url_for('admin.user_view'))
 
 @bp.route('/delete/<int:id>')
@@ -162,12 +176,22 @@ def delete(id):
 def promote(id):
 
     db=get_db()
+    user = get_user(id)
+    error = None
 
-    db.execute(
-        'UPDATE user SET admin = 1 WHERE id = ?', (id,)
-    )
-    db.commit()
+    if user['restricted'] == 1:
+        error = 'Cannot promote restricted user.'
+    elif user['admin'] == 1:
+        error = 'User is already an admin.'
 
+    if error is None:
+        db.execute(
+            'UPDATE user SET admin = 1 WHERE id = ?', (id,)
+        )
+        db.commit()
+        return redirect(url_for('admin.user_view'))
+
+    flash(error)
     return redirect(url_for('admin.user_view'))
 
 @bp.route('/strip/<int:id>')
@@ -175,12 +199,20 @@ def promote(id):
 def strip(id):
 
     db=get_db()
+    user = get_user(id)
+    error = None
 
-    db.execute(
-        'UPDATE user SET admin = 0 WHERE id = ?', (id,)
-    )
-    db.commit()
+    if user['admin'] != 1:
+        error = 'User has no admin rights.'
 
+    if error is None:
+        db.execute(
+            'UPDATE user SET admin = 0 WHERE id = ?', (id,)
+        )
+        db.commit()
+        return redirect(url_for('admin.user_view'))
+
+    flash(error)
     return redirect(url_for('admin.user_view'))
 
 
