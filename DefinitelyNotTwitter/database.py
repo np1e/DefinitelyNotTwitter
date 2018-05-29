@@ -33,6 +33,15 @@ def init_db_command():
     init_db()
     click.echo('Initialized database.')
 
+@click.command('fill-db')
+@with_appcontext
+def fill_db_command():
+    db = get_db()
+    with current_app.open_resource('insert.sql') as f:
+        db.executescript(f.read().decode('utf8'))
+    click.echo('Filled database.')
+
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+    app.cli.add_command(fill_db_command)
