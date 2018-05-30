@@ -24,7 +24,7 @@ def search():
 
         if error is None:
             results = db.execute(
-            'SELECT * FROM post, user WHERE content LIKE ? AND user.id = post.uid', ('%' + query + '%',)
+            'SELECT * FROM post, user WHERE content LIKE ? AND user.id = post.uid AND post.reviewed == 0', ('%' + query + '%',)
             ).fetchall()
 
         if results is None:
