@@ -119,7 +119,7 @@ def restrict(id):
     user = get_user(id)
     error = None
 
-    if user['restricted'] != 1:
+    if user['restricted'] == 1:
         error = "User already restricted."
     elif user['admin'] == 1:
         error = "Cannot restrict admins."
