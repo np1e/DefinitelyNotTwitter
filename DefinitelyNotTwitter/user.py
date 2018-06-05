@@ -65,22 +65,25 @@ def edit_user(id):
     if request.method != 'POST':
         session['descrip'] = user['descrip']
         session['name'] = user['name']
+        session['admin'] = user['admin']
+        session['restricted'] = user['restricted']
         print('descrip saved in session')
 
     if request.method == 'POST':
 
         errorTransaction = None
-        db = get_db();
-        userdata = db.execute(
-            'SELECT * FROM user WHERE id = ?', (g.user['id'], )
-            ).fetchone()
-        if(session['descrip'] != userdata[2]):
-            print('descrip changed')
-            errorTransaction = 'Your description was changed by an admin'
-        if(session['name'] != userdata[1]):
-            print('username changed')
-            errorTransaction = 'Your username was changed by an admin'
-        if(errorTransaction is not None):
+        changedAttributes = []
+        if session['descrip'] != user['descrip']:
+            changedAttributes.append('description')
+        if session['name'] != user['name']:
+            changedAttributes.append('username')
+        if session['admin'] != user['admin']:
+            changedAttributes.append('admin rights')
+        if session['restricted'] != user['restricted']:
+            changedAttributes.append('restricted user')
+        if changedAttributes != []:
+            errorTransaction = "{} {}".format("The following attributes were changed by an admin:",
+                ', '.join('%s' % attribute for attribute in tuple(changedAttributes)))
             flash(errorTransaction)
 
 
