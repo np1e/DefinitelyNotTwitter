@@ -62,7 +62,28 @@ def edit_user(id):
 
     user = get_user(id)
 
+    if request.method != 'POST':
+        session['descrip'] = user['descrip']
+        session['name'] = user['name']
+        print('descrip saved in session')
+
     if request.method == 'POST':
+
+        errorTransaction = None
+        db = get_db();
+        userdata = db.execute(
+            'SELECT * FROM user WHERE id = ?', (g.user['id'], )
+            ).fetchone()
+        if(session['descrip'] != userdata[2]):
+            print('descrip changed')
+            errorTransaction = 'Your description was changed by an admin'
+        if(session['name'] != userdata[1]):
+            print('username changed')
+            errorTransaction = 'Your username was changed by an admin'
+        if(errorTransaction is not None):
+            flash(errorTransaction)
+
+
         username = request.form['username']
         desc = request.form['desc']
         newPwd = request.form['newPwd']

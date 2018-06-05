@@ -34,9 +34,9 @@ def user_view(sort='id.asc'):
     sortOrder = sort.split('.')[1]
 
 
-    query = 'SELECT * FROM user AS u LEFT OUTER JOIN (SELECT uid, count(uid) AS follower FROM follows GROUP BY uid) AS f ON u.id = f.uid ORDER BY {} {}'.format(sortBy, sortOrder)
+    query = 'SELECT * FROM user AS u LEFT OUTER JOIN (SELECT uid, count(uid) AS follower FROM follows GROUP BY uid) AS f ON u.id = f.uid ORDER BY ? {}'.format(sortOrder)
     users = db.execute(
-        query
+        query, (sortBy,)
     ).fetchall()
     return render_template('admin/userview.html', users = users, sort='{}.{}'.format(sortBy, sortOrder))
 
