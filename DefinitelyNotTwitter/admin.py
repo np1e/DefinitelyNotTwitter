@@ -32,11 +32,14 @@ def user_view(sort='id.asc'):
     db = get_db()
     sortBy = sort.split('.')[0]
     sortOrder = sort.split('.')[1]
-
-
-    query = 'SELECT * FROM user AS u LEFT OUTER JOIN (SELECT uid, count(uid) AS follower FROM follows GROUP BY uid) AS f ON u.id = f.uid ORDER BY ? {}'.format(sortOrder)
+    if sortBy not in ['id', 'name', 'follower', 'registered']:
+        sortBy = 'id'
+    if sortOrder not in ['asc', 'desc']:
+        sortOrder = 'asc'
+        
+    query = 'SELECT * FROM user AS u LEFT OUTER JOIN (SELECT uid, count(uid) AS follower FROM follows GROUP BY uid) AS f ON u.id = f.uid ORDER BY {} {}'.format(sortBy, sortOrder)
     users = db.execute(
-        query, (sortBy,)
+        query
     ).fetchall()
     return render_template('admin/userview.html', users = users, sort='{}.{}'.format(sortBy, sortOrder))
 
@@ -60,6 +63,7 @@ def admin_panel(page=0):
 @bp.route('/edituser/<int:id>', methods= ('GET', 'POST'))
 @admin_required
 def edit_user(id):
+
     user = get_user(id)
 
     if request.method == 'POST':
@@ -68,6 +72,7 @@ def edit_user(id):
         role = request.form['role']
         adminPwd = request.form['adminPwd']
         db = get_db()
+
         error = None
         file = None
         imgAdded = False
