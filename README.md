@@ -26,7 +26,7 @@ sudo apt-get install git
 Repository klonen
 
 ```
-git clone <linkToRepo>
+git clone https://github.com/np1e/DefinitelyNotTwitter
 ```
 
 Virtual Environment erstellen und aktivieren
