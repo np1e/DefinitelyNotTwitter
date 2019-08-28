@@ -1,10 +1,9 @@
 # DefinitelyNotTwitter
 
-A social media application, that will definitely not be anything like Twitter.
+A social media application, that will definitely not be anything like Twitter. Build with flask as backend framework.
 
 ## Getting Started
 
-WIP
 
 
 ## Prerequisites
@@ -22,12 +21,6 @@ Außerdem wird git benötigt
 sudo apt-get install git
 ```
 
-und virtualenv
-
-```
-sudo pip3 install virtualenv
-```
-
 ### Installing
 
 Repository klonen
@@ -40,15 +33,14 @@ Virtual Environment erstellen und aktivieren
 
 ```
 cd DefinitelyNotTwitter
-virtualenv venv
+python3 -m venv venv
 . venv/bin/activate
 ```
 
 Flask und Flask Bootstrap installieren
 
 ```
-pip3 install Flask
-pip3 install Flask-Bootstrap
+pip3 install -r requirements.txt
 ```
 
 Außerdem wird SQLite3 benötigt
@@ -57,18 +49,9 @@ Außerdem wird SQLite3 benötigt
 sudo apt-get install sqlite3
 ```
 
-Nun muss die Datenbank initialisiert und gefüllt werden
-
+Starten der Anwendung mit Hilfe eines Skripts:
 ```
-flask init-db
-flask fill-db
-```
-
-Die letzten Schritte
-
-```
-export FLASK_APP=DefinitelyNotTwitter
-flask run
+./run.sh
 ```
 
 Jetzt kann die Anwendung über localhost:5000 erreicht werden.
